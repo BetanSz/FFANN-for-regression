@@ -1,9 +1,16 @@
-import time
-import collections
+"""
+This module containes some common tools used in the main file and training
+"""
+
 import cPickle
+import collections
+import os
+import time
+
 import numpy as np
+
 import pandas as pd
-#from IPython import embed
+# from IPython import embed
 
 
 def x_normalization(x_arr, nm_key, labels, normdata=False):
@@ -315,5 +322,26 @@ def save_results(lib_nets_dfs, lib_nets, data_hooks,
             'norm_data': norm_dict,
             'ML_dict': ML_dict}
         package.update(add2dict)
+        grow(adress)
         with open(adress + file_name, 'wb') as serialization_file:
             cPickle.dump(package, serialization_file, cPickle.HIGHEST_PROTOCOL)
+
+
+def grow(pth):
+    """
+    Unit function of generation for the tree of results
+    """
+    # print pth
+    # print pth.split('/')
+
+    aux = []
+    for folder in pth.split('/'):
+        if folder == '':
+            continue
+        aux.append('/' + folder)
+        create = ''.join(aux)
+        # print create,os.path.isdir(create)
+        if not os.path.isdir(create):
+            print "making dir", create
+            os.mkdir(create)
+            

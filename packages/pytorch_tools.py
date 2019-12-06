@@ -1,10 +1,19 @@
+"""
+This module containes all functions using the torch module.
+The most important function of the script, 'train' is here. Also ANN definitions
+Other auxiliary functions can be found as well
+"""
+
 import collections
 import copy as cp
-import torch
+
+import time
+
 import numpy as np
-import time as time
-from sklearn.model_selection import train_test_split
+
 import packages.common_tools as myctools
+from sklearn.model_selection import train_test_split
+import torch
 
 
 def myloss_l1(y_pred, y_true):
@@ -98,7 +107,10 @@ def train(net, optimizer, loss, train_test_dict, case, targets, verbose=True, li
             optimizer.step()  # apply gradient
         log_dict['times']['train'].append(time.time() - beg)
         if epoch == case['hooking_vec'][log_counter]:  # if epoch in hooking_vec takes FOREVER
-            def namespace_save(epoch):  # namespace usefull when profiling
+            def namespace_save(epoch):
+                r"""
+                namespace usefull when profiling
+                """
                 log_dict['net_par'][epoch] = cp.deepcopy(net.state_dict())
                 for kind, x_vec, y_vec in zip(['train', 'test'], [x_tr, x_te], [y_tr, y_te]):
                     # if cuda memory problem do here storing by batch
@@ -156,7 +168,7 @@ def train(net, optimizer, loss, train_test_dict, case, targets, verbose=True, li
                 namespace_print(epoch)
                 log_dict['times']['print'].append(time.time() - beg)
             log_counter += 1
-            # break #un-comment for avoiding any actual training
+            # break  # un-comment for avoiding any actual training
     log_dict['times']['total_real'] = time.time() - beg_real_train_time
     if verbose:
         print 'actual training % time', \
