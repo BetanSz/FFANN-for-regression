@@ -40,7 +40,7 @@ import numpy as np
 import packages.common_tools as myctools
 import packages.pytorch_tools as myttools
 from IPython import embed
-
+import os
 
 def get_device(use_cuda, verbose=True):
     """
@@ -84,8 +84,9 @@ def user_run():
     "shuffle":"Syes_","optimizer":"Adam_","train_div":50
     }' '5' '5'
     """
-    adress = '/home/es251151/CodeXS/EstebanCode1.0/Esteban_XS_pack/ANN_git2/data_example/'
+    adress = os.getcwd()+'/data_example/'
     name = 'XY_example.pkle'
+    #embed()
     obj = cPickle.load(open(adress + name, 'rb'))
     labels = obj['labels']
     x_vec = obj['x']
